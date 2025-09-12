@@ -1,0 +1,54 @@
+
+
+
+
+  <beans xmlns="http://www.springframework.org/schema/beans"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+        <!-- bean definitions here -->
+        <bean class="com.shashi.Dev" id="dev">
+<!--            <property name="age" value="12"/>-->
+<!--            <constructor-arg name="age" index="0" value="23"/>-->
+<!--            <property name="laptop" ref="laptop"/>-->
+            <constructor-arg name="laptop" ref="laptop"/>
+        </bean>
+      <bean class="com.shashi.Dev" id="dev1">
+      </bean>
+
+<!--      <bean class="com.shashi.DeveloperAutowire" id="autowire">-->
+<!--           <property name="computer" ref="laptop"/>-->
+<!--      </bean>-->
+
+<!--      <bean class="com.shashi.Laptop" id="laptop">-->
+<!--      </bean>-->
+<!--      <bean class="com.shashi.Desktop" id="desktop">-->
+<!--      </bean>-->
+
+<!--        same as down one-->
+<!--       <bean class="com.shashi.DeveloperAutowire" id="devauto" autowire="byName">-->
+
+<!--       </bean>-->
+<!--      use this autowire when the class has same id as the upper class id-->
+<!--         <bean class="com.shashi.Desktop" id="desktop">-->
+
+<!--         </bean>-->
+<!--        <bean class="com.shashi.Laptop" id="laptop">-->
+
+<!--        </bean>-->
+
+      <bean class="com.shashi.DeveloperAutowire" id="devauto" autowire="byType">
+<!--          when using the bytype it is getting confused as both the laptop and desktop are type of computer so use primary-->
+
+      </bean>
+      <bean class="com.shashi.Desktop" id="desktop" primary="true">
+
+      </bean>
+        <bean class="com.shashi.Laptop" id="laptop">
+
+        </bean>
+
+
+
+  </beans>
