@@ -1,0 +1,47 @@
+package com.javaspring.webapp.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
+@Data
+@AllArgsConstructor
+public class Product {
+
+    private int prodId;
+
+    public int getProdId() {
+        return prodId;
+    }
+
+    public String getProdName() {
+        return prodName;
+    }
+
+    public void setProdId(int prodId) {
+        this.prodId = prodId;
+    }
+
+    public void setProdName(String prodName) {
+        this.prodName = prodName;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public Product(int price, int prodId, String prodName) {
+        this.price = price;
+        this.prodId = prodId;
+        this.prodName = prodName;
+    }
+
+    private String prodName;
+    private int price;
+
+
+}
