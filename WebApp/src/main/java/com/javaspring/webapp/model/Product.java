@@ -14,6 +14,9 @@ public class Product {
         return prodId;
     }
 
+    public Product() {
+    }
+
     public String getProdName() {
         return prodName;
     }
@@ -38,6 +41,15 @@ public class Product {
         this.price = price;
         this.prodId = prodId;
         this.prodName = prodName;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "prodId=" + prodId +
+                ", prodName='" + prodName + '\'' +
+                ", price=" + price +
+                '}';
     }
 
     private String prodName;
