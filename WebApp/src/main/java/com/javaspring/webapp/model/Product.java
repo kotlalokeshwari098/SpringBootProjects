@@ -1,14 +1,19 @@
 package com.javaspring.webapp.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Data
 @AllArgsConstructor
+@Entity
 public class Product {
 
+    @Id
     private int prodId;
+
 
     public int getProdId() {
         return prodId;
@@ -54,6 +59,5 @@ public class Product {
 
     private String prodName;
     private int price;
-
 
 }
