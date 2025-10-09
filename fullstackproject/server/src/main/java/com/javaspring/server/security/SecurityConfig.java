@@ -1,20 +1,22 @@
 package com.javaspring.server.security;
 
+import com.javaspring.server.model.AppRole;
+import com.javaspring.server.model.Role;
+import com.javaspring.server.model.User;
+import com.javaspring.server.repositories.RoleRepository;
+import com.javaspring.server.repositories.UserRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -41,25 +43,45 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        JdbcUserDetailsManager manager =
-                new JdbcUserDetailsManager(dataSource);
-        if(!manager.userExists("user1")){
-            manager.createUser(
-                    User.withUsername("user1")
-                            .password("{noop}shashi09")
-                            .roles("admin")
-                            .build()
-            );
-        }
-        if(!manager.userExists("likii")){
-            manager.createUser(
-                    User.withUsername("likii")
-                            .password("{noop}loki09")
-                            .roles("admin")
-                            .build()
-            );
-        }
-        return manager;
+    public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository) {
+        return args -> {
+            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER);
+            if (userRole == null) {
+                userRole = roleRepository.save(new Role(AppRole.ROLE_USER));
+            }
+            Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN);
+            if (adminRole == null) {
+                adminRole = roleRepository.save(new Role(AppRole.ROLE_ADMIN));
+            }
+            if(!userRepository.existsByUsername("user1")){
+                User user1=new User("user1","user1@example.com","{noop}authoritiesuser");
+                user1.setAccountNonLocked(false);
+                user1.setAccountNonExpired(false);
+                user1.setCredentialsNonExpired(false);
+                user1.setEnabled(false);
+                user1.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
+                user1.setAccountExpiryDate(LocalDate.now().plusYears(1));
+                user1.setTwoFactorEnabled(false);
+                user1.setTwoFactorEnabled(false);
+                user1.setSignUpMethod("email");
+                user1.setRole(userRole);
+                userRepository.save(user1);
+            }
+
+            if(!userRepository.existsByUsername("admin")){
+                User admin=new User("admin","admin@example.com","{noop}authoritiesadmin");
+                admin.setAccountNonLocked(false);
+                admin.setAccountNonExpired(false);
+                admin.setCredentialsNonExpired(false);
+                admin.setEnabled(false);
+                admin.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
+                admin.setAccountExpiryDate(LocalDate.now().plusYears(1));
+                admin.setTwoFactorEnabled(false);
+                admin.setTwoFactorEnabled(false);
+                admin.setSignUpMethod("email");
+                admin.setRole(userRole);
+                userRepository.save(admin);
+            }
+        };
     }
 }
